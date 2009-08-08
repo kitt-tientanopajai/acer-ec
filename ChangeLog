@@ -1,0 +1,10 @@
+ChangeLogs
+----------
+
+* Sat, 08 Aug 2009 11:00:58 +0700 - 0.0.1 Kitt Tientanopajai
+	- Initial Release 
+
+Known Issues
+------------
+
+- Touchpad is not off although the flag is.
