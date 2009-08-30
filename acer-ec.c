@@ -1,7 +1,7 @@
 /*
  acer-ec.c
 
- Acer Embedded Controller Intepreter
+ Acer Embedded Controller Interpreter
  
  Copyright 2009 Kitt Tientanopajai <kitty@kitty.in.th>
  
@@ -28,7 +28,6 @@ ChangeLogs
 
 Known Issues
 ------------
-
 - Touchpad is not off although the flag is.
 
 */
@@ -201,7 +200,7 @@ show_status (void)
 
   /* Lid Switch */
   r = get_reg (0x9f);
-  printf ("Lid switch    : %s\n", (r & 0x02) == 0x02 ? "On" : "Off");
+  printf ("Lid switch    : %s\n", (r & 0x02) == 0x02 ? "Yes" : "No");
 
   /* Adapter Preset */
   r = get_reg (0xa3);
@@ -221,15 +220,15 @@ show_status (void)
   else
     printf ("unknown\n");
 
-  /* Battery Present Voltage (mV) */
-  r = get_reg (0xc7) * 256 + get_reg (0xc6);
-  printf ("Voltage       : %2.3f V\n", r / 1000.0);
-
   /* Battery Remain Capacity (mAh) */
   r = get_reg (0xc3) * 256 + get_reg (0xc2);
   printf ("Batt. capacity: %d mAh ", r);
   r = get_reg (0xce);
   printf ("(%d %%)\n", r);
+
+  /* Battery Present Voltage (mV) */
+  r = get_reg (0xc7) * 256 + get_reg (0xc6);
+  printf ("Voltage       : %2.3f V\n", r / 1000.0);
 }
 
 void
@@ -418,9 +417,11 @@ dump_fields (void)
   r = get_reg (0xa6);
   printf ("PCEC %d\n", r);
 
+	/* Passive Trip Point Temp. */
   r = get_reg (0xa7);
   printf ("THON %d\n", r);
 
+	/* Critical Trip Point Temp. */
   r = get_reg (0xa8);
   printf ("THSD %d\n", r);
 
@@ -438,7 +439,7 @@ dump_fields (void)
 
   r = get_reg (0xad);
   printf ("FSSN %d\n", r & 0x0f);
-  printf ("FANU %d\n", (r & 0xf0) == 0x10);
+  printf ("FANU %d\n", (r & 0xf0) > 4);
 
   r = get_reg (0xae);
   printf ("PTVL %d\n", r & 0x07);
@@ -486,30 +487,23 @@ dump_fields (void)
   r = get_reg (0xb9);
   printf ("BRTS %d\n", r);
 
-  /* CRT Present */
   r = get_reg (0xba);
   printf ("CRTS %d\n", r);
 
   r = get_reg (0xbb);
   /* WLAN Active */
   printf ("WLAT %d\n", r & 0x01);
-
   /* Bluetooth Active */
   printf ("BTAT %d\n", (r & 0x02) == 0x02);
-
-  /* WLAN Exist */
+  /* WLAN Adapter Present */
   printf ("WLEX %d\n", (r & 0x04) == 0x04);
-
-  /* Bluetooth Exist */
+  /* Bluetooth Adapter Present */
   printf ("BTEX %d\n", (r & 0x08) == 0x08);
-
   printf ("KLSW %d\n", (r & 0x10) == 0x10);
   printf ("WLOK %d\n", (r & 0x20) == 0x20);
-
   /* 3G Active */
   printf ("W3GA %d\n", (r & 0x40) == 0x40);
-
-  /* 3G Exist */
+  /* 3G Adapter Present */
   printf ("W3GE %d\n", (r & 0x80) == 0x80);
 
   r = get_reg (0xbc);
@@ -529,7 +523,8 @@ dump_fields (void)
   printf ("ACIS %d\n", (r & 0x10) == 0x10);
 
   r = get_reg (0xc0);
-  printf ("BTMF %d\n", (r & 0x70) == 0x10);
+	/* Battery Manufacturer */
+  printf ("BTMF %d\n", (r & 0x70) > 4);
   printf ("BTY0 %d\n", (r & 0x80) == 0x80);
 
   /* Battery Status */
