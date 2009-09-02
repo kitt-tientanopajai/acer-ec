@@ -417,11 +417,11 @@ dump_fields (void)
   r = get_reg (0xa6);
   printf ("PCEC %d\n", r);
 
-	/* Passive Trip Point Temp. */
+  /* Passive Trip Point Temp. */
   r = get_reg (0xa7);
   printf ("THON %d\n", r);
 
-	/* Critical Trip Point Temp. */
+  /* Critical Trip Point Temp. */
   r = get_reg (0xa8);
   printf ("THSD %d\n", r);
 
@@ -523,7 +523,7 @@ dump_fields (void)
   printf ("ACIS %d\n", (r & 0x10) == 0x10);
 
   r = get_reg (0xc0);
-	/* Battery Manufacturer */
+  /* Battery Manufacturer */
   printf ("BTMF %d\n", (r & 0x70) > 4);
   printf ("BTY0 %d\n", (r & 0x80) == 0x80);
 
