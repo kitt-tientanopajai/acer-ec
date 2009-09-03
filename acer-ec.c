@@ -89,7 +89,7 @@ main (int argc, char *argv[])
           dump_fields ();
           break;
         case 'g':               /* get register value */
-          printf ("%d\n", get_reg (atoi (optarg)));
+          printf ("%d\n", get_reg (atoi (optarg) % 256));
           break;
         case 'l':               /* backlight */
           set_reg (0xb9, atoi (optarg) % 10);
