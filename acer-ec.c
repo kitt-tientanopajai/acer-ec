@@ -39,6 +39,7 @@ Known Issues
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <time.h>
 #include <sys/io.h>
 
 #define VERSION "0.0.2"
@@ -780,7 +781,12 @@ read_port (unsigned char port)
 {
   /* check if port is available for read */
   while (!(inb (EC_SC) & 0x01))
-    usleep (100);
+    {
+      struct timespec ts;
+      ts.tv_sec = (time_t) 0;
+      ts.tv_nsec = 100000;
+      nanosleep (&ts, NULL);
+    }
 
   return inb (port);
 }
@@ -790,7 +796,12 @@ write_port (unsigned char data, unsigned char port)
 {
   /* check if port is available for write */
   while (inb (EC_SC) & 0x02)
-    usleep (100);
+    {
+      struct timespec ts;
+      ts.tv_sec = (time_t) 0;
+      ts.tv_nsec = 100000;
+      nanosleep (&ts, NULL);
+    }
 
   outb (data, port);
 }
