@@ -62,6 +62,8 @@ void init_port ();
 unsigned char read_port (unsigned char);
 void write_port (unsigned char, unsigned char);
 
+int quiet = 0;
+
 int
 main (int argc, char *argv[])
 {
@@ -71,7 +73,7 @@ main (int argc, char *argv[])
   if (argc == 1)
     show_status ();
 
-  while ((opt = getopt (argc, argv, "bdg:hl:rstvw")) != -1)
+  while ((opt = getopt (argc, argv, "bdg:hl:qrstvw")) != -1)
     {
       switch (opt)
         {
@@ -86,6 +88,9 @@ main (int argc, char *argv[])
           break;
         case 'l':               /* backlight */
           set_reg (0xb9, atoi (optarg) % 10);
+          break;
+        case 'q':
+          quiet = 1;
           break;
         case 't':               /* touchpad */
           toggle_touchpad ();
@@ -102,11 +107,12 @@ main (int argc, char *argv[])
         case 'v':               /* version */
           printf ("%s %s\n", argv[0], VERSION);
           break;
-        case 'h':               /* help */
+        case '?':               /* help */
+        case 'h':
           help (argv[0]);
           break;
         default:
-          printf ("Usage: acer-ec [-bdhlrstvw] \n");
+          printf ("Usage: acer-ec [-?bdhlqrstvw] \n");
           status = EXIT_FAILURE;
         }
     }
@@ -119,15 +125,16 @@ help (char *progname)
 {
   printf ("Usage: %s [OPTION...] \n", progname);
   printf ("\n");
-  printf ("  -b       toggle bluetooth\n");
-  printf ("  -t       toggle touchpad\n");
-  printf ("  -w       toggle wireless\n");
-  printf ("  -l n     set backlight to n (0 - 9)\n");
-  printf ("  -d       dump known fields\n");
-  printf ("  -r       dump registers\n");
-  printf ("  -s       show status\n");
-  printf ("  -v       show version\n");
-  printf ("  -h       print this help\n");
+  printf ("  -b           toggle bluetooth\n");
+  printf ("  -t           toggle touchpad\n");
+  printf ("  -w           toggle wireless\n");
+  printf ("  -l n         set backlight to n (0 - 9)\n");
+  printf ("  -qb -qt -qw  toggle bluetooth, touchpad, wireless (quiet mode)\n");
+  printf ("  -d           dump known fields\n");
+  printf ("  -r           dump registers\n");
+  printf ("  -s           show status\n");
+  printf ("  -v           show version\n");
+  printf ("  -h, -?       print this help\n");
   printf ("\n");
   printf ("Report bugs to kitty@kitty.in.th\n");
 }
@@ -139,12 +146,14 @@ toggle_bluetooth ()
   if (r & 0x02)
     {
       set_reg (0xbb, r & 0xfd);
-      printf ("Bluetooth is now off.\n");
+      if (!quiet)
+        printf ("Bluetooth is now off.\n");
     }
   else
     {
       set_reg (0xbb, r | 0x02);
-      printf ("Bluetooth is now on.\n");
+      if (!quiet)
+        printf ("Bluetooth is now on.\n");
     }
 }
 
@@ -155,12 +164,14 @@ toggle_wireless ()
   if (r & 0x01)
     {
       set_reg (0xbb, r & 0xfe);
-      printf ("Wireless is now off.\n");
+      if (!quiet)
+        printf ("Wireless is now off.\n");
     }
   else
     {
       set_reg (0xbb, r | 0x01);
-      printf ("Wireless is now on.\n");
+      if (!quiet)
+        printf ("Wireless is now on.\n");
     }
 }
 
@@ -171,12 +182,14 @@ toggle_touchpad ()
   if (r & 0x08)
     {
       set_reg (0x9e, r & 0xf7);
-      printf ("Touchpad is now on.\n");
+      if (!quiet)
+        printf ("Touchpad is now on.\n");
     }
   else
     {
       set_reg (0x9e, r | 0x08);
-      printf ("Touchpad is now off.\n");
+      if (!quiet)
+        printf ("Touchpad is now off.\n");
     }
 }
 
