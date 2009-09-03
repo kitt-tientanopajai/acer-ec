@@ -49,6 +49,7 @@ Known Issues
 #define BE_EC 0x82
 #define BD_EC 0x83
 
+void help ();
 void toggle_bluetooth ();
 void toggle_wireless ();
 void toggle_touchpad ();
@@ -73,44 +74,62 @@ main (int argc, char *argv[])
   while ((opt = getopt (argc, argv, "bdg:hl:rstvw")) != -1)
     {
       switch (opt)
-	{
-	case 'b':		/* bluetooth */
-	  toggle_bluetooth ();
-	  break;
-	case 'd':		/* dump fields */
-	  dump_fields ();
-	  break;
-	case 'g':		/* get register value */
-	  printf ("%d\n", get_reg (atoi (optarg)));
-	  break;
-	case 'l':		/* backlight */
-	  set_reg (0xb9, atoi (optarg) % 10);
-	  break;
-	case 't':		/* touchpad */
-	  toggle_touchpad ();
-	  break;
-	case 'w':		/* wireless */
-	  toggle_wireless ();
-	  break;
-	case 'r':		/* dump registers */
-	  dump_regs ();
-	  break;
-	case 's':		/* show status */
-	  show_status ();
-	  break;
-	case 'v':		/* version */
-	  printf ("%s %s\n", argv[0], VERSION);
-	  break;
-	case 'h':		/* help */
-	  printf ("Usage: %s -bdhlrstvw \n", argv[0]);
-	  break;
-	default:
-	  printf ("Usage: %s -bdhlrstvw \n", argv[0]);
-	  status = EXIT_FAILURE;
-	}
+        {
+        case 'b':               /* bluetooth */
+          toggle_bluetooth ();
+          break;
+        case 'd':               /* dump fields */
+          dump_fields ();
+          break;
+        case 'g':               /* get register value */
+          printf ("%d\n", get_reg (atoi (optarg)));
+          break;
+        case 'l':               /* backlight */
+          set_reg (0xb9, atoi (optarg) % 10);
+          break;
+        case 't':               /* touchpad */
+          toggle_touchpad ();
+          break;
+        case 'w':               /* wireless */
+          toggle_wireless ();
+          break;
+        case 'r':               /* dump registers */
+          dump_regs ();
+          break;
+        case 's':               /* show status */
+          show_status ();
+          break;
+        case 'v':               /* version */
+          printf ("%s %s\n", argv[0], VERSION);
+          break;
+        case 'h':               /* help */
+          help (argv[0]);
+          break;
+        default:
+          printf ("Usage: acer-ec [-bdhlrstvw] \n");
+          status = EXIT_FAILURE;
+        }
     }
 
   return status;
+}
+
+void
+help (char *progname) 
+{
+  printf ("Usage: %s [OPTION...] \n", progname);
+  printf ("\n");
+  printf ("  -b       toggle bluetooth\n");
+  printf ("  -t       toggle touchpad\n");
+  printf ("  -w       toggle wireless\n");
+  printf ("  -l n     set backlight to n (0 - 9)\n");
+  printf ("  -d       dump known fields\n");
+  printf ("  -r       dump registers\n");
+  printf ("  -s       show status\n");
+  printf ("  -v       show version\n");
+  printf ("  -h       print this help\n");
+  printf ("\n");
+  printf ("Report bugs to kitty@kitty.in.th\n");
 }
 
 void
@@ -694,7 +713,7 @@ dump_regs (void)
     {
       r = get_reg (i);
       if (i % 16 == 0)
-	printf ("\n%02x | ", i);
+        printf ("\n%02x | ", i);
 
       printf ("%4d ", r);
     }
