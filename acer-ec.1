@@ -1,0 +1,58 @@
+.TH ACER\-EC 1 "September 2009" "Acer Embedded Controller 0.0.3" "User Manual"
+.SH NAME
+Acer EC \- Acer Aspire One D150 Embedded Controller
+.SH SYNOPSIS
+.B acer\-ec
+[\fIOPTION\fR] ...
+.SH DESCRIPTION
+.B Acer-EC 
+is a program to read/write Embedded Controller of Acer Aspire One 
+D150 (AOD150). This EC provides interface to read/write control registers
+for various devices, e.g., bluetooth, touchpad, wireless, CPU temperature, 
+brightness level, power. The program 
+.B acer-ec
+is capable to read/write those registers and interpret them according to 
+DSDT of Acer AOD150.
+.PP
+.B Acer-EC
+is inspired by the 
+.B acer-ec.pl
+script at
+http://code.google.com/p/aceracpi/wiki/EmbeddedController
+.SH OPTIONS
+.IP \fB\-b\fR,\ \fB\-\-bluetooth\fR[=\fIon\fR,\ \fIoff\fR]
+Toggle bluetooth switch. Turn on / off bluetooth switch if specified.
+.IP \fB\-t\fR,\ \fB\-\-touchpad\fR[=\fIon\fR,\ \fIoff\fR]
+Toggle touchpad switch. Turn on / off touchpad switch if specified.
+.IP \fB\-w\fR,\ \fB\-\-wireless\fR[=\fIon\fR,\ \fIoff\fR]
+Toggle wireless switch. Turn on / off wireless switch if specified.
+.IP  \fB\-l\fR,\ \fB\-\-backlight\fR=\fINUM\fR
+Set backlight (brighness) level to NUM (0 - 9)
+.IP \fB\-q\fR,\ \fB\-\-quiet\fR
+Quiet mode, should be specified before any other options
+.IP  \fB\-g\fR\ \fIREGISTER\fR
+Get current value of the register REGISTER (0 - 255)
+.IP \fB\-d\fR,\ \fB\-\-dump\fR
+Print all known fields
+.IP \fB\-r\fR,\ \fB\-\-registers\fR
+Print all registers
+.IP \fB\-s\fR,\ \fB\-\-status\fR
+Print status
+.IP \fB\-v\fR,\ \fB\-\-version\fR
+Print version
+.IP \fB\-h\fR,\ \fB\-\-help\fR
+Print help page
+.SH BUGS
+acer-ec may not be able to set touchpad switch.
+.SH AUTHOR
+Acer-EC is written by Kitt Tientanopajai
+.SH "REPORTING BUGS"
+Report bugs to <kitty@kitty.in.th>
+.br
+Acer-EC home page: <http://kitty.in.th/index.php?page=acer-ec>
+.SH COPYRIGHT
+Copyright \(co 2009 Kitt Tientanopajai.
+License: GNU GPL version 2 or later.
+.br
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
