@@ -318,7 +318,7 @@ show_status (void)
 
   /* Lid Switch */
   r = get_reg (0x9f);
-  printf ("Lid switch    : %s\n", (r & 0x02) == 0x02 ? "Yes" : "No");
+  printf ("Lid switch    : %s\n", (r & 0x02) == 0x02 ? "On" : "Off");
 
   /* Adapter Preset */
   r = get_reg (0xa3);
